@@ -1,8 +1,6 @@
 <component name="libraryTable">
-  <library name="Sockets">
-    <CLASSES>
-      <root url="file://$PROJECT_DIR$" />
-    </CLASSES>
+  <library name="src">
+    <CLASSES />
     <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/src" />
