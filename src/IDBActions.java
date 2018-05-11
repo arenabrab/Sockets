@@ -1,4 +1,5 @@
-public interface IDBActions {
+public interface IDBActions extends Runnable {
+    void connectToDb();
     void insertIntoDb();
     void selectFromDb();
     void deleteFromDb();

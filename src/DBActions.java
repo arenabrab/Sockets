@@ -3,25 +3,48 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Scanner;
 
-public class DBActions implements IDBActions {
+import static java.lang.Thread.sleep;
+
+public class DBActions implements IDBActions, Runnable {
 
     private static Connection conn = null;
     private static Statement stmt = null;
-    private static ResultSet rs = null;
     private static Scanner scanner = new Scanner(System.in);
+    public int num;
 
+    @Override
+    public void run() {
+        connectToDb();
+        userMenu();
+    }
 
-    DBActions(){
-        System.out.println("Thank you for creating DBActions Object :-)");
-
+    public void connectToDb(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost/sockets?" +
                     "user=root&password=skate1");
+            System.out.println("Is connection closed? : " + conn.isClosed());
         } catch (Exception e) {
             System.out.println("This is 1: " + e);
         }
-        userMenu();
+    }
+
+//    DBActions(int num){
+//        this.num = num;
+//        System.out.println("Thank you for creating DBActions Object :-) " + num);
+//
+//        try {
+//            Class.forName("com.mysql.jdbc.Driver");
+//            conn = DriverManager.getConnection("jdbc:mysql://localhost/sockets?" +
+//                    "user=root&password=skate1");
+//        } catch (Exception e) {
+//            System.out.println("This is 1: " + e);
+//        }
+////        run();
+////        userMenu();
+DBActions(int num){
+    super();
+    this.num = num;
     }
 
     private void userMenu() {
@@ -92,9 +115,9 @@ public class DBActions implements IDBActions {
         String query = "SELECT * FROM wallet ORDER BY TRANS_NUM";
         try{
             stmt = conn.createStatement();
-            rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                System.out.println(rs.getInt("TRANS_NUM") + "\t\t\t|\t" + rs.getDouble("TRANS_AMT"));
+                System.out.println(rs.getInt("TRANS_NUM") + "\t\t\t|\t" + rs.getBigDecimal("TRANS_AMT"));
             }
         } catch(Exception e){
             System.out.println("This is select: " + e);
@@ -119,4 +142,6 @@ public class DBActions implements IDBActions {
             e.printStackTrace();
         }
     }
+
+
 }
